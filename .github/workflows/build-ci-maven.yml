@@ -1,0 +1,74 @@
+name: Automobile
+
+env:
+  JAVA_VERSION: "21"
+  DISTRIBUTION: "temurin"
+
+on:
+  # Every pull request is built and tested, whatever files it changes.
+  pull_request:
+  # The merged result is built (and packaged by `mvn verify`) on every push to master.
+  push:
+    branches: [master]
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v5
+        with:
+          distribution: ${{ env.DISTRIBUTION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: maven
+          cache-dependency-path: pom.xml
+
+      - name: Build and run unit tests
+        run: mvn -B -ntp verify
+
+  publish-package:
+    name: Publish package
+    if: ${{ github.event_name == 'release' && github.event.action == 'created' }}
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v5
+        with:
+          distribution: ${{ env.DISTRIBUTION }}
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: maven
+          cache-dependency-path: pom.xml
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      # The pom version is ${revision} (default 0.0.0): use the release tag, without a leading "v".
+      - name: Resolve release version
+        run: echo "REVISION=${TAG_NAME#v}" >> "$GITHUB_ENV"
+        env:
+          TAG_NAME: ${{ github.event.release.tag_name }}
+
+      - name: Build with Maven
+        run: mvn -B -ntp package -Drevision="$REVISION"
+
+      # The pom has no <distributionManagement>, so the target repository is passed explicitly.
+      - name: Publish to GitHub Packages Apache Maven
+        run: >
+          mvn -B -ntp deploy -DskipTests -Drevision="$REVISION"
+          -s "$GITHUB_WORKSPACE/settings.xml"
+          -DaltDeploymentRepository=github::https://maven.pkg.github.com/${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
