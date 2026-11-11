@@ -1,4 +1,4 @@
-# The repository's one .gitignore.
+# The generic .gitignore.
 #
 # A general-purpose set of ignore rules (Node, JVM, Gradle, Maven, Python, IDEs, OS, media, secrets,
 # build and test leftovers), merged into one list: sections A→Z, patterns A→Z within each section
@@ -6,6 +6,9 @@
 #
 # The one exception to A→Z is the Exceptions section itself, which must stay last: in .gitignore the
 # last matching rule wins, and it re-includes files the rules above would otherwise hide.
+#
+# Learn more about .gitignore:
+#     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
 ### Claude Code (a shared .claude/settings.json can be committed) ###
 .claude/settings.local.json
@@ -70,6 +73,9 @@ intellij/src/main/resources/bundled/
 [Oo]ut/
 
 ### JetBrains IDEs ###
+#   JetBrains (IntelliJ IDEA, PyCharm) keep a separate template at
+#   https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+#   which can be added to the global gitignore or merged into this file.
 *.iml
 *.ipr
 *.iws
@@ -183,9 +189,22 @@ coverage.xml
 htmlcov/
 nosetests.xml
 
-### Python — tooling: pdm, PEP 582, pybuilder ###
-#   pdm.lock, Pipfile.lock and poetry.lock are usually committed, so they aren't ignored here.
-#   .python-version: commit it for an application, ignore it for a library.
+### Python — tooling: pdm, PEP 582, pipenv, poetry, pybuilder, pyenv ###
+#   pdm.lock, Pipfile.lock and poetry.lock are usually committed, so they aren't ignored here
+#   (similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control).
+#   poetry.lock is especially recommended for binary packages to ensure reproducibility, and is
+#   more commonly ignored for libraries:
+#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
+#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
+#   in version control:
+#   https://pdm.fming.dev/latest/usage/project/#working-with-version-control
+#   PEP 582 is used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm.
+#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
+#   However, in case of collaboration, if having platform-specific dependencies or dependencies
+#   having no cross-platform support, pipenv may install dependencies that don't work, or not
+#   install all needed dependencies.
+#   .python-version: commit it for an application; for a library or package you might want to
+#   ignore it since the code is intended to run in multiple environments.
 .pdm-build/
 .pdm-python
 .pdm.toml
