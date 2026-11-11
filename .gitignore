@@ -10,6 +10,10 @@
 # Learn more about .gitignore:
 #     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
 
+### Celery ###
+celerybeat-schedule
+celerybeat.pid
+
 ### Claude Code (a shared .claude/settings.json can be committed) ###
 .claude/settings.local.json
 
@@ -17,9 +21,12 @@
 **/*.db
 **/*.db-*
 data/
+tests/*.db*
+
+### Django ###
 db.sqlite3
 db.sqlite3-journal
-tests/*.db*
+local_settings.py
 
 ### Eclipse and STS ###
 .apt_generated
@@ -39,10 +46,12 @@ tests/*.db*
 ENV/
 env.*/
 env/
-instance/
-local_settings.py
 venv.*/
 venv/
+
+### Flask ###
+.webassets-cache
+instance/
 
 ### Gradle (the wrapper is committed: see Exceptions) ###
 .gradle/
@@ -60,6 +69,10 @@ intellij/.intellijPlatform/
 intellij/.kotlin/
 intellij/build/
 intellij/src/main/resources/bundled/
+
+### IPython ###
+ipython_config.py
+profile_default/
 
 ### Java, Kotlin and the JVM ###
 *.app
@@ -80,6 +93,9 @@ intellij/src/main/resources/bundled/
 *.ipr
 *.iws
 .idea/
+
+### Jupyter Notebook ###
+.ipynb_checkpoints
 
 ### Logs and temporary files ###
 *.log
@@ -158,17 +174,6 @@ wheels/
 /site
 docs/_build/
 
-### Python — frameworks and notebooks ###
-*.sage.py
-.ipynb_checkpoints
-.ropeproject
-.scrapy
-.webassets-cache
-celerybeat-schedule
-celerybeat.pid
-ipython_config.py
-profile_default/
-
 ### Python — installer logs ###
 pip-delete-this-directory.txt
 pip-log.txt
@@ -221,6 +226,15 @@ __pypackages__/
 .pyre/
 .pytype/
 dmypy.json
+
+### Rope ###
+.ropeproject
+
+### SageMath ###
+*.sage.py
+
+### Scrapy ###
+.scrapy
 
 ### Secrets, keys and certificates ###
 #   DEPLOY.md creates private.pem and chain.crt; macOS signing uses a .p12.
