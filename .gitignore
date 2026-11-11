@@ -1,7 +1,7 @@
-# Parth — the repository's one .gitignore.
+# The repository's one .gitignore.
 #
-# Parth's own build and test leftovers plus a general-purpose set (Node, JVM, Gradle, Maven, Python,
-# IDEs, OS, media, secrets), merged into one list: sections A→Z, patterns A→Z within each section
+# A general-purpose set of ignore rules (Node, JVM, Gradle, Maven, Python, IDEs, OS, media, secrets,
+# build and test leftovers), merged into one list: sections A→Z, patterns A→Z within each section
 # (plain `LC_ALL=C sort`), no duplicates.
 #
 # The one exception to A→Z is the Exceptions section itself, which must stay last: in .gitignore the
@@ -114,7 +114,7 @@ node_modules/
 #   /models/ and /results/ are project-root only: packages/core/src/models/ is source code.
 #   packages/vscode/media/webview.html is copied from packages/webview-ui/dist by the extension build.
 #   parth-conformance-* is what the conformance suite creates (and normally deletes) in the workspace under test.
-.parth
+.parth/
 /models/
 /results/
 packages/vscode/media/webview.html
